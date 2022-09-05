@@ -20,7 +20,7 @@ def main():
         if os.path.isfile(f):
             # Obtenemos los datos y contamos la frecuencia
             df = pd.read_excel(f, header=0)
-
+            print(df.sort_values('MINISTERIO / ENTE / ORGANISMO'))
 
 if __name__ == "__main__":
     main()
