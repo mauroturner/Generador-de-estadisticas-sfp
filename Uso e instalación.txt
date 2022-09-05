@@ -1,0 +1,5 @@
+1. Colocar todas las inscripciones de los cursos en formato .xlsx en Archivos/Entrada (El archivo xlsx solo debe contener las inscripciones exitosas)
+2. Tener instalada la versión 3.10.5 de Python (https://www.python.org/ftp/python/3.10.5/python-3.10.5-amd64.exe)
+3. Es necesario tener agregado al PATH la extensión python para poder ejecutar comandos (la misma se habilita en el instalador previamente descargado)
+4. Ejecutar "Instalar dependencias.bat"
+5. Ejecutar "Generar estadisticas.bat"
