@@ -27,22 +27,31 @@ def main():
             puestos = df['PUESTO ACTUAL'].unique()
             generos = df['GÉNERO'].unique()
 
-            # Diccionario de estadísticas
-            estadisticas = dict.fromkeys(df['MINISTERIO / ENTE / ORGANISMO'].unique(), {})
- 
+            estadisticas = df.groupby('MINISTERIO / ENTE / ORGANISMO')
+
+            for ministerio, grupo in estadisticas:
+                por_localidad = estadisticas.get_group(ministerio).groupby('LOCALIDAD')
+                print('-----------------------' + ministerio + '-----------------------')
+                for localidad, grupo in por_localidad:
+                    por_puesto_actual = por_localidad.get_group(localidad).groupby('PUESTO ACTUAL')
+                    #print(por_localidad.get_group(localidad)['PUESTO ACTUAL'])
+                    for puesto_actual, grupo in por_puesto_actual:
+                        print(por_puesto_actual.get_group(puesto_actual)['PUESTO ACTUAL'])
+
+            
             # Creamos las estadísticas
-            for ministerio in ministerios:
-                informacion_ministerio = df.loc[df['MINISTERIO / ENTE / ORGANISMO'].isin([ministerio])]
-                ministerio_localidad = informacion_ministerio['LOCALIDAD'].unique()
-                ministerio_localidad_funcion = informacion_ministerio['LOCALIDAD'].loc[informacion_ministerio['PUESTO ACTUAL'].isin([puestos])].unique()
+            # for ministerio in ministerios:
+            #     informacion_ministerio = df.loc[df['MINISTERIO / ENTE / ORGANISMO'].isin([ministerio])]
+            #     ministerio_localidad = informacion_ministerio['LOCALIDAD'].unique()
+            #     ministerio_localidad_funcion = informacion_ministerio['LOCALIDAD'].loc[informacion_ministerio['PUESTO ACTUAL'].isin([puestos])].unique()
 
-                #print(ministerio_localidad)
-                estadisticas[ministerio]["ESTADISTICAS"] = {
-                    'LOCALIDADES': ministerio_localidad,
-                    'FUNCION': ministerio_localidad_funcion,
+            #     #print(ministerio_localidad)
+            #     estadisticas[ministerio]["ESTADISTICAS"] = {
+            #         'LOCALIDADES': ministerio_localidad,
+            #         'FUNCION': ministerio_localidad_funcion,
 
-                }
-            print(estadisticas["ASIP"]["ESTADISTICAS"])
+            #     }
+            # print(estadisticas["ASIP"]["ESTADISTICAS"])
             #filtro_ministerio = df.loc[df['MINISTERIO / ENTE / ORGANISMO'].isin(['AMA'])]
             #localidades = filtro_ministerio['LOCALIDAD']
             #filtro_localidad = filtro_ministerio.loc[filtro_ministerio['PUESTO ACTUAL'].isin(['a'])]
