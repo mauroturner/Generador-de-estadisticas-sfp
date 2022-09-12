@@ -12,8 +12,8 @@ Estadísticas por
 """
 
 def main():
-    excel_input = "Archivos\\Entrada"
-    excel_output = "Archivos\\Salida"
+    excel_input = 'Archivos\\Entrada'
+    excel_output = 'Archivos\\Salida'
     for archivo in os.listdir(excel_input):
         f = os.path.join(excel_input, archivo)
         excel_output = os.path.join(excel_output, archivo)
@@ -21,46 +21,31 @@ def main():
             # Obtenemos los datos y ordenamos
             df = pd.read_excel(f, header=0).sort_values('MINISTERIO / ENTE / ORGANISMO')
 
-            # Listado de ministerios, localidades, puestos y género
-            ministerios = df['MINISTERIO / ENTE / ORGANISMO'].unique()
-            localidades = df['LOCALIDAD'].unique()
-            puestos = df['PUESTO ACTUAL'].unique()
-            generos = df['GÉNERO'].unique()
-
+            # Agrupamos por ministerio
             estadisticas = df.groupby('MINISTERIO / ENTE / ORGANISMO')
 
+            # Preparamos la hoja de cálculo
+            wb = openpyxl.Workbook()
+            hoja = wb.active
+            hoja['A1'].value = "Curso: " + archivo.split('.')[0]
+            hoja['B1'].value = 'Total: ' + '100000'
+            asd = []
+            # Generamos las estadísticas
+            i = 3
             for ministerio, grupo in estadisticas:
+                comienza_en_fila = i
                 por_localidad = estadisticas.get_group(ministerio).groupby('LOCALIDAD')
-                print('-----------------------' + ministerio + '-----------------------')
                 for localidad, grupo in por_localidad:
                     por_puesto_actual = por_localidad.get_group(localidad).groupby('PUESTO ACTUAL')
-                    #print(por_localidad.get_group(localidad)['PUESTO ACTUAL'])
+                    hoja['B' + str(i)].value = localidad
                     for puesto_actual, grupo in por_puesto_actual:
-                        print(por_puesto_actual.get_group(puesto_actual)['PUESTO ACTUAL'])
+                        hoja['C' + str(i)].value = puesto_actual
+                        i += 1
+                hoja.merge_cells('A' + str(comienza_en_fila) + ':' + 'A' + str(i-1))
+                hoja['A' + str(comienza_en_fila)].value = ministerio
+            wb.save(os.path.join('Archivos\\Salida', archivo))
+        # limpiamos la ruta
+        f = ''
 
-            
-            # Creamos las estadísticas
-            # for ministerio in ministerios:
-            #     informacion_ministerio = df.loc[df['MINISTERIO / ENTE / ORGANISMO'].isin([ministerio])]
-            #     ministerio_localidad = informacion_ministerio['LOCALIDAD'].unique()
-            #     ministerio_localidad_funcion = informacion_ministerio['LOCALIDAD'].loc[informacion_ministerio['PUESTO ACTUAL'].isin([puestos])].unique()
-
-            #     #print(ministerio_localidad)
-            #     estadisticas[ministerio]["ESTADISTICAS"] = {
-            #         'LOCALIDADES': ministerio_localidad,
-            #         'FUNCION': ministerio_localidad_funcion,
-
-            #     }
-            # print(estadisticas["ASIP"]["ESTADISTICAS"])
-            #filtro_ministerio = df.loc[df['MINISTERIO / ENTE / ORGANISMO'].isin(['AMA'])]
-            #localidades = filtro_ministerio['LOCALIDAD']
-            #filtro_localidad = filtro_ministerio.loc[filtro_ministerio['PUESTO ACTUAL'].isin(['a'])]
-            #print(filtro_localidad)
-            #for t in test:
-            #    print(t)
-            #print(test)
-            #for ministerio in ministerios:
-            #    ministerios[ministerio]
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
