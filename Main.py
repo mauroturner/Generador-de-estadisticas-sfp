@@ -28,8 +28,8 @@ def main():
             wb = openpyxl.Workbook()
             hoja = wb.active
             hoja['A1'].value = "Curso: " + archivo.split('.')[0]
-            hoja['B1'].value = 'Total: ' + '100000'
-            asd = []
+            hoja['B1'].value = 'Total: ' + str(len(df.index))
+
             # Generamos las estadísticas
             i = 3
             for ministerio, grupo in estadisticas:
