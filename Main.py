@@ -30,14 +30,36 @@ def main():
             # Preparamos la hoja de cálculo
             wb = openpyxl.Workbook()
             hoja = wb.active
-            hoja['A1'].value = "Curso: " + archivo.split('.')[0]
-            hoja['B1'].value = 'Total: ' + str(len(df.index))
+
+            # Añadimos encabezados y estilos
+            hoja.merge_cells('A1:E1')
+            hoja['A1'].value = archivo.split('.')[0]
+            hoja['A1'].alignment = Alignment(horizontal='center', vertical='center')
+            hoja['A1'].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+            hoja['A1'].font = Font(name='Arial', size=8)
+            hoja['A3'].value = 'MINISTERIO / ENTE / ORGANISMO'
+            hoja['B3'].value = 'LOCALIDAD'
+            hoja.merge_cells('C3:D3')
+            hoja['C3'].value = 'FUNCIÓN'
+            hoja['E3'].value = 'TOTAL'
             hoja.column_dimensions['A'].width = 25
             hoja.column_dimensions['B'].width = 25
             hoja.column_dimensions['C'].width = 25
+            hoja['A3'].alignment = Alignment(horizontal='center', vertical='center')
+            hoja['A3'].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+            hoja['A3'].font = Font(name='Arial', size=8)
+            hoja['B3'].alignment = Alignment(horizontal='center', vertical='center')
+            hoja['B3'].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+            hoja['B3'].font = Font(name='Arial', size=8)
+            hoja['C3'].alignment = Alignment(horizontal='center', vertical='center')
+            hoja['C3'].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+            hoja['C3'].font = Font(name='Arial', size=8)
+            hoja['E3'].alignment = Alignment(horizontal='center', vertical='center')
+            hoja['E3'].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+            hoja['E3'].font = Font(name='Arial', size=8)
 
             # Generamos las estadísticas
-            i = 3
+            i = 4
             for ministerio, grupo in estadisticas:
                 comienza_en_fila = i
                 localidad_comienza_en_fila = i
@@ -73,6 +95,14 @@ def main():
                 hoja['A' + str(comienza_en_fila)].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
                 hoja['A' + str(comienza_en_fila)].font = Font(name='Arial', size=8)
                 hoja['A' + str(comienza_en_fila)].value = ministerio
+            hoja['D' + str(i)].value = 'TOTAL'
+            hoja['E' + str(i)].value = str(len(df.index))
+            hoja['D' + str(i)].alignment = Alignment(horizontal='center', vertical='center')
+            hoja['D' + str(i)].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+            hoja['D' + str(i)].font = Font(name='Arial', size=8)
+            hoja['E' + str(i)].alignment = Alignment(horizontal='center', vertical='center')
+            hoja['E' + str(i)].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+            hoja['E' + str(i)].font = Font(name='Arial', size=8)
             wb.save(os.path.join('Archivos\\Salida', archivo))
         # limpiamos la ruta
         f = ''
