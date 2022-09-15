@@ -41,19 +41,21 @@ def main():
             for ministerio, grupo in estadisticas:
                 comienza_en_fila = i
                 localidad_comienza_en_fila = i
+                total_por_ministerio = 0
                 por_localidad = estadisticas.get_group(ministerio).groupby('LOCALIDAD')
                 for localidad, grupo in por_localidad:
-                    por_puesto_actual = por_localidad.get_group(localidad).groupby('PUESTO ACTUAL')
+                    por_puesto_actual = por_localidad.get_group(localidad).groupby('PUESTO ACTUAL').aggregate('value_counts').reset_index(name='TOTAL')
                     hoja['B' + str(i)].value = localidad
-                    for puesto_actual, grupo in por_puesto_actual:
-                        hoja['C' + str(i)].value = puesto_actual
+                    for index, puesto_actual in por_puesto_actual.iterrows():
                         hoja['C' + str(i)].alignment = Alignment(horizontal='center', vertical='center')
                         hoja['C' + str(i)].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
                         hoja['C' + str(i)].font = Font(name='Arial', size=8)
-                        # hoja['D' + str(i)].value = puesto_actual
+                        hoja['C' + str(i)].value = puesto_actual['PUESTO ACTUAL']
                         hoja['D' + str(i)].alignment = Alignment(horizontal='center', vertical='center')
                         hoja['D' + str(i)].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
                         hoja['D' + str(i)].font = Font(name='Arial', size=8)
+                        hoja['D' + str(i)].value = puesto_actual['TOTAL']
+                        total_por_ministerio += puesto_actual['TOTAL']
                         i += 1
                     hoja.merge_cells('B' + str(localidad_comienza_en_fila) + ':' + 'B' + str(i-1))
                     hoja['B' + str(localidad_comienza_en_fila)].alignment = Alignment(horizontal='center', vertical='center')
@@ -63,6 +65,8 @@ def main():
                     hoja['E' + str(comienza_en_fila)].alignment = Alignment(horizontal='center', vertical='center')
                     hoja['E' + str(comienza_en_fila)].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
                     hoja['E' + str(comienza_en_fila)].font = Font(name='Arial', size=8)
+                    hoja['E' + str(comienza_en_fila)].font = Font(name='Arial', size=8)
+                    hoja['E' + str(comienza_en_fila)].value = total_por_ministerio
                     localidad_comienza_en_fila = i
                 hoja.merge_cells('A' + str(comienza_en_fila) + ':' + 'A' + str(i-1))
                 hoja['A' + str(comienza_en_fila)].alignment = Alignment(horizontal='center', vertical='center')
