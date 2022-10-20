@@ -114,14 +114,14 @@ def main():
                 hoja['A' + str(comienza_en_fila)].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
                 hoja['A' + str(comienza_en_fila)].font = Font(name='Arial', size=8)
                 hoja['A' + str(comienza_en_fila)].value = ministerio
-            hoja['D' + str(i)].value = 'TOTAL'
-            hoja['E' + str(i)].value = str(len(df.index))
-            hoja['D' + str(i)].alignment = Alignment(horizontal='center', vertical='center')
-            hoja['D' + str(i)].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
-            hoja['D' + str(i)].font = Font(name='Arial', size=8)
-            hoja['E' + str(i)].alignment = Alignment(horizontal='center', vertical='center')
-            hoja['E' + str(i)].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
-            hoja['E' + str(i)].font = Font(name='Arial', size=8)
+            hoja['F' + str(i)].value = 'TOTAL'
+            hoja['G' + str(i)].value = str(len(df.index))
+            hoja['F' + str(i)].alignment = Alignment(horizontal='center', vertical='center')
+            hoja['F' + str(i)].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+            hoja['F' + str(i)].font = Font(name='Arial', size=8)
+            hoja['G' + str(i)].alignment = Alignment(horizontal='center', vertical='center')
+            hoja['G' + str(i)].border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+            hoja['G' + str(i)].font = Font(name='Arial', size=8)
             wb.save(os.path.join('Archivos\\Salida', archivo))
         # limpiamos la ruta
         f = ''
